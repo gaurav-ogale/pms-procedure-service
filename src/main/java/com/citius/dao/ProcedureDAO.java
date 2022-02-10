@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.citius.exception.ProcedureException;
 import com.citius.model.Procedures;
 import com.citius.repository.ProcedureRepo;
 
@@ -17,13 +18,31 @@ public class ProcedureDAO  {
 	private ProcedureRepo procedureRepo;
 
 	
-	public List<Procedures> getAllProcedures() {
-		return dbToJson(procedureRepo.findAll());
+	public List<Procedures> getAllProcedures() throws ProcedureException {
+		List<Procedures> list = procedureRepo.findAll();
+		if(list.isEmpty())
+			throw new ProcedureException("No Procedures Found");
+		else
+			return dbToJson(list);
 	}
 	
-	public Procedures getProcedureByCode(String pCode) {
+	public Procedures getProcedureByCode(String pCode) throws ProcedureException {
+		
+		Procedures p = procedureRepo.getProcedureByProcedureCode(pCode);
+		if(p.equals(null))
+			throw new ProcedureException("No Procedure for given procedure code");
+		else
+			return p;
+	}
+	
 
-		return procedureRepo.getProcedureByProcedureCode(pCode);
+	public List<Procedures> getProcedureByKeyword(String keyword) throws ProcedureException {
+		// TODO Auto-generated method stub
+		List<Procedures> procList = procedureRepo.getProcedureByKeyword(keyword);
+		if(procList.isEmpty())
+			throw new ProcedureException("No Suggestions....");
+		else
+			return dbToJson(procList);
 	}
 	
 	private List<Procedures> dbToJson(List<Procedures> procedureList) {
@@ -36,13 +55,6 @@ public class ProcedureDAO  {
 			jsonList.add(procedure);
 		}
 		return jsonList;
-	}
-
-	public List<Procedures> getProcedureByKeyword(String keyword) {
-		// TODO Auto-generated method stub
-		//System.out.println(procedureRepo.getProcedureByKeyword(keyword));
-		List<Procedures> procList = procedureRepo.getProcedureByKeyword(keyword);
-		return dbToJson(procList);
 	}
 	
 	
