@@ -67,5 +67,34 @@ public class ProcedureServiceIMPL implements ProcedureService{
 	}
 
 
+	@Override
+	public List<Procedures> getByIsDepricated(Boolean isDepricated) throws ProcedureException {
+		List<Procedures> list = new ArrayList<>();
+		try {
+			list = procedureDAO.getByIsDepricated(isDepricated);
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+			throw new ProcedureException(e.getMessage());
+		}
+		return list;
+	}
+
+
+	@Override
+	public void updateProcedure(Procedures proc) throws ProcedureException {
+		// TODO Auto-generated method stub
+		
+		try {
+			 procedureDAO.updateProcedure(proc);
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+			throw new ProcedureException(e.getLocalizedMessage());
+		}
+		
+	}
+
+
 
 }

@@ -14,4 +14,8 @@ public interface ProcedureService {
 	
 	public List<Procedures> getProcedureByKeyword(String keyword) throws ProcedureException;
 
+	List<Procedures> getByIsDepricated(Boolean isDepricated)throws ProcedureException;
+
+	void updateProcedure(Procedures proc) throws ProcedureException;
+
 }

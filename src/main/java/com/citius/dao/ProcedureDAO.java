@@ -56,6 +56,29 @@ public class ProcedureDAO  {
 		}
 		return jsonList;
 	}
+
+	public List<Procedures> getByIsDepricated(Boolean isDepricated) throws ProcedureException{
+		// TODO Auto-generated method stub
+		List<Procedures> procList = procedureRepo.getByIsDepricated(isDepricated);
+		if(procList.isEmpty())
+			throw new ProcedureException("Not Found..");
+		else
+			return dbToJson(procList);
+	}
+
+	public void updateProcedure(Procedures proc) throws ProcedureException{
+		
+		try {
+			procedureRepo.updateProcedure(proc.getProcedureIsDepricated(), proc.getProcedureCode());
+		}
+		catch (Exception e) {
+			System.out.println("DAO" + e.getClass());
+			throw new ProcedureException("Bad Request");
+		}
+		
+		
+		
+	}
 	
 	
 	
